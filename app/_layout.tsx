@@ -1,20 +1,35 @@
-import { Colors } from "@/constants/colors";
-import "@/styles/global.css"; // updated path
+import { ThemeProvider, useTheme } from "@/contexts/ThemeContext";
 import { Stack } from "expo-router";
-import { useColorScheme } from "react-native";
+import { Switch } from "react-native";
 
-export default function RootLayout() {
-  const colorScheme = useColorScheme();
-  const preferedColor = Colors[colorScheme ?? "light"];
+function LayoutWithTheme() {
+  const { themeMode, setThemeMode, theme } = useTheme();
+
   return (
     <Stack
       screenOptions={{
-        headerStyle: { backgroundColor: preferedColor.background },
-        headerTintColor: preferedColor.title,
+        headerStyle: { backgroundColor: theme.background },
+        headerTintColor: theme.title,
+        headerRight: () => (
+          <Switch
+            value={themeMode === "dark"}
+            onValueChange={(isDark) => setThemeMode(isDark ? "dark" : "light")}
+          />
+        ),
+        headerShown: false,
+        animation: "slide_from_right",
       }}
     >
       <Stack.Screen name="index" options={{ title: "Home" }} />
-      <Stack.Screen name="about" options={{ title: "About" }} />
+      <Stack.Screen name="(auth)" options={{ headerShown: false }} />
     </Stack>
+  );
+}
+
+export default function RootLayout() {
+  return (
+    <ThemeProvider>
+      <LayoutWithTheme />
+    </ThemeProvider>
   );
 }

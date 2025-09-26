@@ -1,31 +1,38 @@
-import { Link } from "expo-router";
-import { Image, Text, View } from "react-native";
+import { useTheme } from "@/contexts/ThemeContext";
+import { Href, Link } from "expo-router";
+import { StyleSheet, Text, View } from "react-native";
 
 export default function Index() {
-  return (
-    <View className="flex-1 justify-center items-center bg-gray-300">
-      <View className="w-full object-cover h-[300px]">
-        <Image
-          source={{
-            uri: "https://gluestack.io/_next/image?url=%2Fimages%2Fclick.jpeg&w=1920&q=75",
-          }}
-          className="w-full h-full"
-        />
-      </View>
+  const { theme } = useTheme();
 
-      <Text className="text-4xl text-black text-center active:text-pink mt-2 font-bold">
+  return (
+    <View style={[styles.container, { backgroundColor: theme.background }]}>
+      <Text style={{ color: theme.text, fontSize: 24, fontWeight: "bold" }}>
         Title
       </Text>
-      <Text className="text-base text-black text-center active:text-pink-500">
-        Lorem ipsum dolor sit, amet consectetur adipisicing elit. Dolorem
-        aspernatur tempora nesciunt eaque. Accusantium hic nesciunt dolorem
-        dolore blanditiis libero ipsam assumenda cupiditate alias adipisci et
-        similique fugiat, ullam natus.
+      <Text style={{ color: theme.text, fontSize: 16, marginTop: 8 }}>
+        Lorem ipsum dolor sit amet consectetur adipisicing elit.
       </Text>
-
-      <Link href={"/about"} className="text-blue-700 underline text-3xl">
-        About
+      <Link
+        href={"/(auth)/login" as Href}
+        style={{ marginTop: 20, color: theme.iconColorFocused }}
+      >
+        Login
+      </Link>
+      <Link
+        href={"/(auth)/register" as Href}
+        style={{ marginTop: 20, color: theme.iconColorFocused }}
+      >
+        register
       </Link>
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+});
